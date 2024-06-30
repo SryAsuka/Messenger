@@ -14,10 +14,8 @@ public:
     ~FormChat();
 
     Q_INVOKABLE void updateChatHistory(QString data);
-    void setUserName(QString value);
-    void setHost(QString value);
-    void setGroupName(QString value);
-    void setClient(QString value);
+
+
     QString FileSizeConvert(qint64 size);
     QList<fileEntryT *> fileList;
     void updateFileProgress(quint32 fileId, int progress);
@@ -27,7 +25,8 @@ public:
     void delFixedRemoteShareFile(int index);
 signals:
     void acceptFile(fileEntryT *file);
-    void chatHistoryUpdated();
+    void chatHistoryUpdated(QString data);
+
 protected:
     bool event(QEvent *event);
 signals:
@@ -35,7 +34,7 @@ signals:
     void addSendFile(QString file);
     void delSendFile(int index);
     void delAllSendFile();
-    // void acceptFile(fileEntryT *file);
+
     void rejectFile(fileEntryT *file);
     void cancelFile(fileEntryT *file);
     void recvfinish(quint32 fileId);
@@ -43,16 +42,12 @@ signals:
 
 private:
 
-    QString mUser;
-    QString mHost;
-    QString mGroup;
-    QString mClient;
-
     QObject *mChatUser;
 public slots:
-    void addShareFile(const QStringList &files);
+    Q_INVOKABLE void addShareFile(const QStringList &files,QString des);
+    void chatSend(QString text,QString des);
 private slots:
-    void chatSend();
+
 
     void delShareFile();
     void delAllShareFile();
@@ -60,8 +55,7 @@ private slots:
     void rejectShareFile();
     void acceptAllShareFile();
     void rejectAllShareFile();
-    void on_tableWidgetSendFileList_customContextMenuRequested(const QPoint &pos);
-    void on_tableWidgetRecvFileList_customContextMenuRequested(const QPoint &pos);
+
     void fileRecvFinished(quint32 fileId);
     void fileRecvProgress(quint32 fileId, int progress);
     void fileRecvError(quint32 fileId, int progress);

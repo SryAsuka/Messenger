@@ -12,29 +12,29 @@
 
 typedef struct fileEntryInfoT
 {
-    qint64 size;
-    quint32 permission;
-    QString fileName;
-    QString absoluteFilePath;
-    quint32 fileType;
-    quint32 metadataChangeTime;
+    qint64 size;//大小
+    quint32 permission;//权限
+    QString fileName;//名称
+    QString absoluteFilePath;//路径
+    quint32 fileType;//类型
+    quint32 metadataChangeTime;//修改时间
 } fileEntryInfoT;
 
 //QFileInfo a;
 
 typedef struct fileEntryT
 {
-    bool fileOut;
-    quint32 fileId;
-    fileEntryInfoT info;
-    quint64 fileOffset;
+    bool fileOut;//输出
+    quint32 fileId;//id
+    fileEntryInfoT info;//文件条目详细信息
+    quint64 fileOffset;//偏移量？
     //If recv file, fileHost is source
     //If send file, fileHost is dest
-    quint32 fileHost;
-    quint16 filePort;
+    quint32 fileHost;//主机地址
+    quint16 filePort;//端口号
     //IDLE,SENDING,FINISHED. -- send file
     //IDLE,RECEIVING,FINISHED -- recv file
-    quint32 fileTranStatus;
-    bool fileTranStopFlag;
+    quint32 fileTranStatus;//传输状态
+    bool fileTranStopFlag;//是否停止
 } fileEntryT;
 #endif // IPMSGCOMMON_H

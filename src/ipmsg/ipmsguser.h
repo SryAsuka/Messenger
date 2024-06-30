@@ -6,7 +6,7 @@
 // #include <QMainWindow>
 #include <QObject>
 #include <QWidget>
-// #include "formchat.h"
+#include "formchat.h"
 #include "ipmsgcommon.h"
 
 class IpMsgUser : public QObject
@@ -15,9 +15,9 @@ class IpMsgUser : public QObject
 public:
     explicit IpMsgUser(QObject *parent = nullptr);
     ~IpMsgUser();
-    void dumpUserInfo();
-    void appendChatHistory(QString data);
-    void updateChatFormHistory();
+    void dumpUserInfo();//打印用户信息
+    void appendChatHistory(QString data);//向聊天历史中添加信息
+    void updateChatFormHistory();//更新聊天表单的历史记录
 
     QList<fileEntryT *> fileQueue;
     int fileSendFlag;
@@ -31,7 +31,7 @@ public:
     QHostAddress userHostAddr;
     uint32_t userPktSeq;
     uint32_t userCfmSeq;
-    // FormChat *chatForm = nullptr;
+    FormChat *chatForm = nullptr;
     QString chatHistory;
     QByteArray chatBuffer;
     int offlineTimer = 0;
@@ -39,7 +39,7 @@ public:
     int blinkFlag = 0;
 
 signals:
-    void sendFileUpdate();
+    void sendFileUpdate();//当文件发送状态更新时发出的信号。
 
 private slots:
 };

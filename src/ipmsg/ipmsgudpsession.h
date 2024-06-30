@@ -1,17 +1,20 @@
+//管理通过 UDP 进行的 IP Messenger 会话
 #ifndef IPMSGUDPSESSION_H
 #define IPMSGUDPSESSION_H
 
-#include <QHostAddress>
+#include <QHostAddress>//处理ip地址
 // #include <QMainWindow>
 #include <QObject>
 #include <QUdpSocket>
 // #include <QWidget>
-#include "ipmsguser.h"
+#include "ipmsguser.h"//ipmessenger用户信息
 
-#define IPMSG_RETRY_COUNT 4
+#define IPMSG_RETRY_COUNT 4//重试次数
 
-#define IPMSG_PORT 0x979
+#define IPMSG_PORT 0x979//定义使用的端口号
 
+
+//命令常量定义
 /*  command  */
 #define IPMSG_NOOPERATION 0x00000000UL
 
@@ -130,37 +133,41 @@
 #define IPMSG_FILE_ALIASFNAME 0x00000040UL   // alias fname
 #define IPMSG_FILE_UNICODEFNAME 0x00000041UL // UNICODE fname
 
+
+//IpMsgUdpSession 类的定义
 class IpMsgUdpSession : public QObject
 {
     Q_OBJECT
 public:
     explicit IpMsgUdpSession(QObject *parent = nullptr);
-    bool IpMsgUdpSessionValid();
-    void ipMsgUserRefresh(IpMsgUser *user, unsigned int startip, unsigned int endip);
-    void ipMsgRespOK(IpMsgUser *user, IpMsgUser *dest);
-    void ipMsgSendData(IpMsgUser *user, QHostAddress dest, QByteArray data);
-    void ipMsgSendFiles(IpMsgUser *user, QHostAddress dest, QList<fileEntryT *> files);
-    void ipMsgRespBr(IpMsgUser *user, IpMsgUser *dest);
-    void ipMsgUserExit(IpMsgUser *user);
+    bool IpMsgUdpSessionValid();//检查udp会话是否有效
+    void ipMsgUserRefresh(IpMsgUser *user, unsigned int startip, unsigned int endip);//刷新用户信息
+    void ipMsgRespOK(IpMsgUser *user, IpMsgUser *dest);//发送响应确认
+    void ipMsgSendData(IpMsgUser *user, QHostAddress dest, QByteArray data);//发送数据
+    void ipMsgSendFiles(IpMsgUser *user, QHostAddress dest, QList<fileEntryT *> files);//发送文件
+    void ipMsgRespBr(IpMsgUser *user, IpMsgUser *dest);//响应广播
+    void ipMsgUserExit(IpMsgUser *user);//用户退出
     bool mUdpBind = false;
+    // void ipMsgUdpDataHandle();//处理接受到的udp数据
 signals:
-    void ipMsgUdpSessionDataReady(QHostAddress src, QByteArray data);
+    void ipMsgUdpSessionDataReady(QHostAddress src, QByteArray data);//当有新的 UDP 数据准备好时发出该信
 
 public slots:
 
 private slots:
-    void ipMsgUdpDataHandle();
+    void ipMsgUdpDataHandle();//处理接受到的udp数据
 
 protected:
-    void timerEvent(QTimerEvent *event);
+    void timerEvent(QTimerEvent *event);//处理定时事件
+
 
 private:
-    QUdpSocket ipMsgSock;
+    QUdpSocket ipMsgSock;//udp套接字，用于发送和接受数据包
     void ipMsgPktSend(QHostAddress address, uint16_t port, QByteArray data);
-    unsigned int ipMsgHostCurrent;
-    unsigned int ipMsgHostStart;
-    unsigned int ipMsgHostEnd;
-    IpMsgUser *mUser = nullptr;
+    unsigned int ipMsgHostCurrent;//当前主机地址
+    unsigned int ipMsgHostStart;//开始
+    unsigned int ipMsgHostEnd;//结束
+    IpMsgUser *mUser = nullptr;//当前用户信息
     int32_t ipMsgHostDetectTimer = 0;
 };
 

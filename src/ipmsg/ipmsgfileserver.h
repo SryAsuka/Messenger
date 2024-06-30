@@ -25,16 +25,16 @@ signals:
     void fileServerTransFinished();
 
 public slots:
-    void fileServerNewConnection();
-    void fileServerReadyRead();
-    void fileServerSockDisconnect();
-    void fileServerSockError(QAbstractSocket::SocketError error);
+    void fileServerNewConnection();//新连接
+    void fileServerReadyRead();//数据可读
+    void fileServerSockDisconnect();//套接子断开
+    void fileServerSockError(QAbstractSocket::SocketError error);//错误
 
 private:
-    QTcpServer mServer;
-    QList<fileEntryT *> fileSendQueue;
-    QList<QTcpSocket *> mSocks;
-    QThread *mSendThread = nullptr;
+    QTcpServer mServer;//监听传入的tcp连接
+    QList<fileEntryT *> fileSendQueue;//是一个列表，用于存储待发送的文件条目
+    QList<QTcpSocket *> mSocks;// 是一个列表，用于存储活动的 TCP 套接字
+    QThread *mSendThread = nullptr;//用于处理文件发送的线程
 };
 
 #endif // IPMSGFILESERVER_H

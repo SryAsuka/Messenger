@@ -25,7 +25,7 @@ IpMsgFileRecv::IpMsgFileRecv(IpMsgUser *user, fileEntryT *file, QObject *parent)
     connect(this, SIGNAL(fileRecvCancel()), client, SLOT(ipMsgFileClientClose()));
     thread->start();
 }
-
+//槽函数检查当前处理的文件是否与传入的文件匹配，如果匹配，则发出 ​fileRecvCancel​ 信号。
 void IpMsgFileRecv::ipMsgFileClientCancel(fileEntryT *file)
 {
     if (client != nullptr) {

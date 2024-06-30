@@ -19,7 +19,7 @@ IpMsgFileClient::IpMsgFileClient(IpMsgUser* user, QObject* parent)
     me.userGroupName = user->userGroupName;
     mSize = 0;
 }
-
+//创建 ​QTcpSocket​ 实例，尝试连接到远程服务器，并设置信号和槽的连接。
 void IpMsgFileClient::ipMsgFileClientStart()
 {
     sock = new QTcpSocket();
@@ -29,8 +29,12 @@ void IpMsgFileClient::ipMsgFileClientStart()
 
     server.setAddress(recvFileInfo.fileHost);
     connect(sock, SIGNAL(connected()), this, SLOT(ipMsgFileClientConnected()));
+    // connect(sock,
+    //         SIGNAL(error(QAbstractSocket::SocketError)),
+    //         this,
+    //         SLOT(ipMsgFileClientError(QAbstractSocket::SocketError)));
     connect(sock,
-            SIGNAL(error(QAbstractSocket::SocketError)),
+            SIGNAL(errorOccurred(QAbstractSocket::SocketError)),
             this,
             SLOT(ipMsgFileClientError(QAbstractSocket::SocketError)));
     connect(sock, SIGNAL(disconnected()), this, SLOT(ipMsgFileClientDisconnected()));
@@ -53,7 +57,7 @@ void IpMsgFileClient::ipMsgFileClientClose()
         }
     }
 }
-
+//当连接建立后，发送文件请求数据包，并尝试打开本地文件以写入接收到的数据。
 void IpMsgFileClient::ipMsgFileClientConnected()
 {
     QByteArray fileReq;
@@ -79,7 +83,7 @@ void IpMsgFileClient::ipMsgFileClientConnected()
         }
     }
 }
-
+//接收 TCP 数据，写入文件，并更新进度。如果文件接收完成，关闭文件和套接字。
 void IpMsgFileClient::ipMsgFileClientRecv()
 {
     QByteArray data;
@@ -125,7 +129,7 @@ void IpMsgFileClient::ipMsgFileClientRecv()
         return;
     }
 }
-
+//处理断开连接和错误情况，关闭文件和套接字，并根据接收到的数据量发送完成或错误信号。
 void IpMsgFileClient::ipMsgFileClientDisconnected()
 {
     qDebug() << __FUNCTION__ << "Thread" << QThread::currentThreadId();

@@ -2,12 +2,15 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+
 ApplicationWindow {
     width: 640
     height: 480
     visible: true
     title: qsTr("Messenger")
 
+
+//头部工具栏，绑定刷新和推出
     header: ToolBar {
         RowLayout{
             ToolButton{ action: open }
@@ -15,6 +18,8 @@ ApplicationWindow {
         }
     }
 
+
+//动作，刷新和退出
     Action {
         id: open
         text: qsTr("刷新")
@@ -29,7 +34,7 @@ ApplicationWindow {
         icon.name: "application-exit"
         onTriggered: Qt.quit();
     }
-
+//水平布局，两个长方形，用于放置userlist和chatform
     Row {
         anchors.fill: parent
 
@@ -39,6 +44,7 @@ ApplicationWindow {
             color: "transparent"
 
             UserList {
+                id: userList
                 anchors.fill: parent
             }
         }
@@ -49,8 +55,14 @@ ApplicationWindow {
             color: "transparent"
 
             ChatForm {
+                id: chatForm
                 anchors.fill: parent
+                Component.onCompleted: {
+                            // 建立`UserList`和`ChatForm`之间的连接
+                            userList.userClicked.connect(chatForm.handleData);
+                        }
             }
         }
     }
+
 }

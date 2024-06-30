@@ -17,7 +17,7 @@ signals:
     void fileRecvCancel();
 
 public slots:
-    void ipMsgFileClientCancel(fileEntryT *file);
+    void ipMsgFileClientCancel(fileEntryT *file);//用于处理文件接收取消的逻辑。
 };
 
 #endif // IPMSGFILERECV_H

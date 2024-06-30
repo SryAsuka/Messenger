@@ -5,6 +5,7 @@
 #include <QTimerEvent>
 #include "ipmsguser.h"
 #include <unistd.h>
+#include<QDebug>
 
 quint32 g_pkg_seq = 0;
 IpMsgUdpSession::IpMsgUdpSession(QObject *parent)
@@ -25,7 +26,8 @@ bool IpMsgUdpSession::IpMsgUdpSessionValid()
 
 void IpMsgUdpSession::ipMsgPktSend(QHostAddress address, uint16_t port, QByteArray data)
 {
-    //qDebug()<<"OUT:"<<address.toString()<<"Data:"<<data;
+
+    // qDebug()<<"OUT:"<<address.toString()<<"Data:"<<data;
     ipMsgSock.writeDatagram(data, address, port);
 }
 
@@ -172,6 +174,9 @@ void IpMsgUdpSession::ipMsgSendData(IpMsgUser *user, QHostAddress dest, QByteArr
         command.append(data);
         command.append((char) 0);
         command.append((char) 0);
+        // ipMsgPktSend(dest, IPMSG_PORT, command);
+        // qDebug()<<command;
+
         ipMsgPktSend(dest, IPMSG_PORT, command);
     }
 }
@@ -228,9 +233,11 @@ void IpMsgUdpSession::ipMsgUdpDataHandle()
     QHostAddress srcAddress;
     quint16 srcPort;
     data.resize(ipMsgSock.pendingDatagramSize());
-    ipMsgSock.readDatagram(data.data(), data.size(), &srcAddress, &srcPort);
+    ipMsgSock.readDatagram(data.data(),data.size(),&srcAddress, &srcPort);
     // qDebug()<<"Received from"<<srcAddress.toString()<<":"<<QString::number(srcPort,10)<<data;
 
     emit ipMsgUdpSessionDataReady(srcAddress, data);
     return;
 }
+
+

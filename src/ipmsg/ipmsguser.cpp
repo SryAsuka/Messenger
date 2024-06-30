@@ -13,7 +13,7 @@ IpMsgUser::IpMsgUser(QObject *parent)
     userGroupName.clear();
     userPktSeq = 0;
     userCfmSeq = 0;
-    // chatForm = new FormChat();
+    chatForm = new FormChat();
 }
 
 IpMsgUser::~IpMsgUser()
@@ -32,7 +32,7 @@ void IpMsgUser::dumpUserInfo()
     qDebug() << "PacketSeq:" << userPktSeq;
     return;
 }
-
+//将传入的数据添加到 ​chatHistory​ 字符串中。
 void IpMsgUser::appendChatHistory(QString data)
 {
     chatHistory.append(data);
@@ -41,7 +41,9 @@ void IpMsgUser::appendChatHistory(QString data)
 
 void IpMsgUser::updateChatFormHistory()
 {
-    // if (chatForm != nullptr) {
-    //     chatForm->updateChatHistory(chatHistory.toUtf8());
-    // }
+
+    if (chatForm != nullptr) {
+        chatForm->updateChatHistory(chatHistory.toUtf8());
+        // qDebug()<<chatHistory.toUtf8();
+    }
 }
